@@ -1,6 +1,97 @@
 <!DOCTYPE html>
-<html>
-<body>
-<h1>这是程立豪的个人博客（还未编写）站点，测试。</h1>
-</body>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>程立豪的技术博客</title>
+       
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="js/quanju.js"></script>
+    <link rel="stylesheet"  href="css/all.css" type="text/css" />
+    <script src="js/jquery-1.11.3.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script type="text/javascript">
+
+var n=1;//图片标记数
+var b=10;
+var dingshi; //让图片动的定时器
+var dingshishang;
+window.onload=xia;
+function xia(){
+	window.setInterval("xiatu()",4000);
+	shangtu();
+}
+//更换图片
+function xiatu(){
+var obj=document.getElementById("xia");
+n++;
+if(n>=7){
+n=1;
+}
+obj.src="img/"+n+".jpg";
+}
+
+
+function shangtu(){
+dingshishang=window.setInterval("shang()",3750);
+}
+//更换图片
+function shang(){
+var shang=document.getElementById("shang");
+b++;
+if(b>=21){
+b=10;
+}
+shang.src="img/"+b+".jpg";
+}
+
+var x,y,n=0,ny=0,rotINT,rotYINT
+
+function rotateYDIV()
+{
+y=document.getElementById("shang")
+
+rotYINT=window.setInterval("startYRotate()",10)
+}
+
+function startYRotate()
+{
+ny=ny+1
+y.style.transform="rotateY(" + ny + "deg)"
+y.style.webkitTransform="rotateY(" + ny + "deg)"
+y.style.OTransform="rotateY(" + ny + "deg)"
+y.style.MozTransform="rotateY(" + ny + "deg)"
+if (ny==180 || ny>=360)
+	{
+	clearInterval(rotYINT)
+	if (ny>=360){ny=0}
+	}
+}
+
+</script>
+
+
+  </head>
+  <body>
+<div id="bao">
+
+  <img id="shang"  src="img/10.jpg" style="transform:rotateY(180deg);" onclick="rotateYDIV()" />
+  
+  	<div class="jumbotron">
+  <div class="container">
+  <h1><font>欢迎来到我的博客</font></h1>
+  <p><font>程立豪，一位想敲钢琴却在敲键盘的程序员，愿天堂没有debug。。。。。。</font></p>
+  <p><a class="btn btn-primary btn-lg" href="shouye/new_file.html" role="button"><font>Learn More</font></a><</p>
+  </div>
+  </div>
+<img id="xia" src="img/3.jpg" />
+</div>
+
+
+
+  </body>
 </html>
