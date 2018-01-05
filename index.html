@@ -16,35 +16,35 @@
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script type="text/javascript">
 
-var n=1;//图片标记数
-var b=10;
+var r=4;//图片标记数
+var b=30;
 var dingshi; //让图片动的定时器
 var dingshishang;
 window.onload=xia;
 function xia(){
-	window.setInterval("xiatu()",4000);
+	window.setInterval("xiatu()",2000);
 	shangtu();
 }
 //更换图片
 function xiatu(){
 var obj=document.getElementById("xia");
-n++;
-if(n>=7){
-n=1;
+r++;
+if(r>=17){
+r=4;
 }
-obj.src="img/"+n+".jpg";
+obj.src="img/"+r+".jpg";
 }
 
 
 function shangtu(){
-dingshishang=window.setInterval("shang()",3750);
+dingshishang=window.setInterval("shang()",3000);
 }
 //更换图片
 function shang(){
 var shang=document.getElementById("shang");
 b++;
-if(b>=21){
-b=10;
+if(b>=38){
+b=30;
 }
 shang.src="img/"+b+".jpg";
 }
@@ -54,8 +54,15 @@ var x,y,n=0,ny=0,rotINT,rotYINT
 function rotateYDIV()
 {
 y=document.getElementById("shang")
+clearInterval(rotYINT)
+rotYINT=window.setInterval("startYRotate()",30)
+}
 
-rotYINT=window.setInterval("startYRotate()",10)
+function xiazhuan()
+{
+y=document.getElementById("xia")
+clearInterval(rotYINT)
+rotYINT=window.setInterval("startYRotate()",30)
 }
 
 function startYRotate()
@@ -72,6 +79,8 @@ if (ny==180 || ny>=360)
 	}
 }
 
+
+
 </script>
 
 
@@ -79,16 +88,16 @@ if (ny==180 || ny>=360)
   <body>
 <div id="bao">
 
-  <img id="shang"  src="img/10.jpg" style="transform:rotateY(180deg);" onclick="rotateYDIV()" />
+  <img id="shang"  src="img/30.jpg" style="transform:rotateY(180deg);" onclick="rotateYDIV()" />
   
   	<div class="jumbotron">
   <div class="container">
   <h1><font>欢迎来到我的博客</font></h1>
-  <p><font>程立豪，一位想敲钢琴却在敲键盘的程序员，愿天堂没有debug。。。。。。</font></p>
+  <p><font>程立豪，一位想敲钢琴却在敲键盘的程序员，愿天堂没有debug。。。。。。</font><br/>点击图片有惊喜</p>
   <p><a class="btn btn-primary btn-lg" href="shouye/new_file.html" role="button"><font>Learn More</font></a><</p>
   </div>
   </div>
-<img id="xia" src="img/3.jpg" />
+<img id="xia" src="img/5.jpg" style="transform:rotateY(180deg); " onclick="xiazhuan()"/>
 </div>
 
 

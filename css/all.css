@@ -12,7 +12,7 @@ body {  margin:0px; padding:0px; overflow:hidden; background-color: black;}
 }
 
 .jumbotron{
-        height:20%;
+        height:auto%;
         position:relative;
         width: 100%;
         background: black;
