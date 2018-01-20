@@ -1,0 +1,38 @@
+#liebiao a {
+	height: 65px;
+	margin: 20px 0px 0px 70px;
+	width: 80%;
+	
+-webkit-transition: width 2s; /* Safari and Chrome */
+
+
+	}
+#liebiao a:hover{
+	width: 100%;
+	
+	background-color:lightcoral;
+
+
+}
+.jumbotron {font-family: nina;
+	font-size:500%;
+	height: 400px;
+}
+#liebiao{
+	width: 80%;
+	margin: 60px 10%;
+	font-size: 200%;
+	}
+#liebiao a p{
+	float: right;
+}
+body{
+	background-color: #FAF2CC;
+	margin: 1px;
+	padding: 1px;
+	
+}
+.jumbotron{
+	background: url(../img/5.jpg)no-repeat;
+	background-size:100% 100% ;
+}

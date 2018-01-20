@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>程立豪的技术博客</title>
+       
+		
+
+    <!-- Bootstrap -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+		<link href="../css/style.css" rel="stylesheet" type="text/css"/>
+		
+    <script src="../js/jquery-1.11.3.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="../js/bootstrap.min.js"></script>
+		<script src="../js/scrollReveal.js"></script>
+		<link rel="stylesheet" type="text/css" href="css/index.css" />
+				<script src="js/myscript.js"> </script>
+  </head>
+  <body >
+
+<div class="header" id="home">
+		<div class="container">
+			<div class="logos">
+				<a href="index.html"><img src="../img/logo.jpg" alt=""></a>
+			</div>
+			<!--- banner Slider starts Here --->
+	  			<script src="../js/responsiveslides.min.js"></script>
+					 <script>
+					    // You can also use "$(window).load(function() {"
+					    $(function () {
+					      // Slideshow 4
+					      $("#slider4").responsiveSlides({
+					        auto: true,
+					        pager: true,
+					        nav: true,
+					        speed: 500,
+					        namespace: "callbacks",
+					        before: function () {
+					          $('.events').append("<li>before event fired.</li>");
+					        },
+
+					        after: function () {
+					          $('.events').append("<li>after event fired.</li>");
+					        }
+					      });
+					
+					    });
+					  </script>
+			<!----//End-slider-script---->
+			<!-- Slideshow 4 -->
+			    <div  id="top" class="callbacks_container">
+			      <ul class="rslides" id="slider4">
+			        <li>
+			        	<div class="slide-content">
+							<h2>程立豪的博客</h2>
+							<p>一个爱好编程，善于解决问题的挑战者<br> 一个开放性，带个人资料的简单博客</p>
+
+							<button type="button" class="btn btn-primary">来点音乐吧</button>
+						</div>
+					 </li>
+					 <li>
+			        	<div class="slide-content">
+							<h2>欢迎来到我的博客</h2>
+							<p>我的博客布局所有模块都是自己构思与编写<br> 如果大家有更好的构思与想法欢迎大家联系我一起探讨</p>
+							<button type="button" class="btn btn-primary">换一首</button>
+						</div>
+					 </li>
+					 <li>
+			        	<div class="slide-content">
+							<h2>热爱生活，努力工作</h2>
+							<p>热爱工作，一个爱工作喜欢按时完成任务的工作狂<br> 热爱生活，一个喜欢看电影.看源码的，爱听音乐，爱运动的工程师</p>
+							<button type="button" class="btn btn-primary">音乐点缀生活</button>
+						</div>
+					 </li>
+			      </ul>
+			    </div>
+		</div>
+	</div>
+
+		
+<div class="top-nav">
+			<nav>
+				<span class="menu"></span>
+				<ul>
+					<li><a href="#about" class="scroll">我的简介</a></li>
+					<li><a href="#xiangmu" class="scroll">我的经历</a></li>
+					<li class="active"><a href="#home" class="scroll">首页</a></li>
+					<li><a href="#boke" class="scroll">My blog</li>
+					<li><a href="#contact" class="scroll">联系我</a></li>
+					<div class="clearfix"> </div>
+				</ul>
+			</nav>
+		</div>
+
+
+
+
+
+<div class="about" id="about">
+			
+		<div class="container"  data-scroll-reveal="enter from the bottom after 0.5s">
+			<script src="js/scrollReveal.js"></script> 
+
+
+			<h3 class="top-title">我的简介</h3>
+			<h4>一个更善于解决问题的挑战者</h4>
+			<p align="center">萍乡学院  电子信息工程  本科</p>
+			<p class="show-not">就读与萍乡学院 机电系 电子信息工程专业，经过深入的学习以及对以后的职业规划，专业分为两个大致方向，一个是与硬件处理，电子设备与信息系统的设计、开发、应用和集成。基于最小系统的自动控制,以及信号处理方向。另一个软件开发应用方向，基于汇编，c语言，C++/Java 等编程语言的实际软件开发，而本人更加热爱编程，爱好逻辑思维，走的是软件开发应用方向，在学习了C语言后考过全国C语言二级，并开始深入学习Java开发，<b>在校期间参加过计算机协会，参加过校园网站建设
+			熟悉动态与静态网页编写，参加过协会网上商城项目实战开发并担任组长，与HTML5小游戏的设计开发等</b>。善于解决开发中碰到的各种实际问题，与团队成员的协作沟通。敢于接收新的挑战，热爱Codeing ,热爱工作，热爱生活。
+			</p>
+		</div>
+
+			<div id="kuan" data-scroll-reveal="enter left and move 50px over 2s">
+			<div class="row about-row">
+				<div class="col-md-3 about-row-column">
+					<img src="../img/men-a.jpg" alt=""/>
+				</div>
+				<div class="col-md-9 about-column">
+					<h3><b>程立豪</b></h3>
+					<h4><b>Java工程师</b></h4>
+					<p><b>扎实的Java基础，熟悉Html5,CSS3,JSP,EL TL表达式<br>熟悉bootstrap框架的使用，Script脚本，JQUery,Json数据传输，了解Ajax<br>掌握Mysql数据库操作，熟悉Linux系统(最小系统)，了解shell，熟悉Struts2框架,Spring框架，hibernate5框架，单个框架的搭建，以及SSH框架整合<br>熟练使用IDE工具  Eclipse 以及更友好的Html5的前端工具 HBuilder 以及版本控制SVN</b></p>
+					<h5>MY Skills</h5>
+				<p>Java</p><div id="progressbar"><div id="progress" ><div id="pbaranim">18%</div></div></div>
+				<p>Html5</p><div id="progressbar"><div id="progress" ><div id="pbaranim">18%</div></div></div>
+				<p>Css3</p><div id="progressbar"><div id="progress" ><div id="pbaranim">18%</div></div></div>
+				<p>Jsp</p><div id="progressbar"><div id="progress" ><div id="pbaranim">18%</div></div></div>
+					<ul class="social">
+						<li><i class="fa"></i></li>
+						<li><i class="tw"></i></li>
+						<li><i class="in"></i></li>
+						<li><i class="pw"></i></li>
+					</ul>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			</div>
+			</div>
+			<div id="xiangmu" class="xiangmu">
+			<div id="baowei">			
+				
+			<div id="zuo" align="center" data-scroll-reveal="enter top and move 80px over 1.2s">
+				<h3 align="center"><b>关于Html5</b></h3>
+				<h4>听到关于制作Html小游戏项目</h4>
+				<p>当听到老师委派我们小组成员动手制作Html5小游戏时，我和我的同学们是无比兴奋的，毕竟这是一个非常有趣的项目,是一个小游戏，又用到了HTML5技术实现，但主要用到的还是HTML5的画布的新特性画图和script来负责它的逻辑实现。现在在右边我会用script结合画布来画一幅圣诞树，而这就是游戏场景绘制的代码实现基础。
+				利用Html5的画布效果可以每一帧的对图像进行重绘，用script实现具体的人物，精灵，的预加载，以及功能的实现。
+				</p>
+				
+			</div>
+			<div id="you"  data-scroll-reveal="enter bottom and move 150px over 2s">
+				<canvas id="canvas1" width="400" height="600" style="border: 1px solid"></canvas>
+				
+<script type="text/javascript">
+		
+		function createCanopyPath(context)
+		{
+		context.beginPath();
+		context.moveTo(-25,-50);
+		context.lineTo(-10, -80);
+		context.lineTo(-20, -80);
+		context.lineTo(-5, -110);
+		context.lineTo(-15, -110);
+		
+		context.lineTo(0,-140);
+		
+		context.lineTo(15,-110);
+		context.lineTo(5,-110);
+		context.lineTo(20,-80);
+		context.lineTo(10,-80);
+		context.lineTo(25,-50);
+		context.closePath();
+		}
+		
+		
+		function drawTree(context)
+		{
+			createCanopyPath(context);	
+			context.strokeStyle="#663300";
+			context.lineWidth=4;
+			context.lineJoin="round";
+			
+			context.stroke();
+			context.fillStyle="#339900";
+			context.fill();
+			var trunkGradient=context.createLinearGradient(-5,0,5,0);//判断是横向纵向填充样式直接看它相对远点坐标是横的还是竖的
+			trunkGradient.addColorStop(0,"#663300");
+			trunkGradient.addColorStop(0.4,"#996600");
+			trunkGradient.addColorStop(1,"#552200");
+			var trunkAlphaGradient=context.createLinearGradient(0,-50,0,0);
+			trunkAlphaGradient.addColorStop(0,"rgba(0,0,0,0.5)");
+			trunkAlphaGradient.addColorStop(0.2,"rgba(0,0,0,0.0)");//rgba分别表示红绿蓝与透明度
+			context.fillStyle=trunkAlphaGradient;
+			context.fillStyle=trunkGradient;
+			context.fillRect(-5,-50,10,50);//以矩形左上角坐标为起点x,y，再以长短大小为x2,y2
+			context.transform(1,0,-0.5,1,0,0);//矩阵变换固定公式，为图形添加倒影
+			context.scale(1.0,0.6)//比例大小横向x纵向y
+			context.fillStyle="rgba(0,0,0,0.2)";
+			context.fillRect(-5,-50,10,50);
+			createCanopyPath(context);//因为样式可以被顶替掉但是没顶替可以在画出图形后再次填充，而造树叶的方法就是画出树叶的边框
+			context.fill();	
+		}
+		
+		
+		function drawTrails()
+		{
+			//树
+		var canvas=document.getElementById("canvas1");
+		var context=canvas.getContext("2d");
+		context.save();
+		context.translate(130,250);
+		drawTree(context);
+		context.restore();
+		//树
+		context.save();
+		context.translate(260,500);
+		context.scale(2.0,2.0);
+		drawTree(context); 
+		context.restore();
+		//石头路
+		context.save();		
+		context.beginPath();
+		context.translate(-10,350);
+		context.moveTo(0,0);
+		context.quadraticCurveTo(170,50,260,-190);
+		context.quadraticCurveTo(310,-250,410,-250);
+		context.strokeStyle=context.createPattern(gravle,"repeat");
+		context.lineWidth=20;
+		context.stroke();
+		context.restore();
+		//文字
+		context.save();
+		context.font="60px impact";
+		context.textAlign="center";
+		context.fillStyle="#996600";
+		context.fillText("Happy-Trails",200,60,400);
+		context.transform(1,0,-0.5,1,0,0);
+		context.scale(1.0,0.8);
+		context.fillStyle="rgba(0,0,0,0.2)";
+		context.fillText("Happy-Trails",230,80,400 );
+		context.restore();
+		}
+		
+		
+		var gravle=new Image();
+		gravle.src="gravel.jpg";
+		gravle.onload=function(){
+			drawTrails();
+		}
+
+
+
+
+
+</script>
+			</div>
+			</div>
+			
+	
+			<div id="zuoms" class="row" >
+  <div class="col-sm-6 col-md-4" id="zuoyx" data-scroll-reveal="enter left and move 150px over 2s">
+    <div class="thumbnail">
+      <img src="../img/16.jpg" alt="...">
+      <div class="caption">
+        <h3 align="center">向下把少年</h3>
+        <p>由于本网站必须用静态页面搭建，而Html5在这里更容易在此大显身手，快来点开右边的游戏玩玩看，试试你能不能到100级吧<br><b>注意：我在游戏里添加了自己喜欢的音乐你也可以关闭，部分浏览器不支持音乐，且游戏仅支持键盘操作</b></p>
+        <p><button type="button" class="btn btn-success">关闭音乐</button>
+        	<button type="button" class="btn btn-primary">换一首</button>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+			<script> 
+			 var shu=0;
+			 $(document).ready(function(){
+  			$(".btn-success").click(function(){
+  			  $("#music").attr("src","");
+  			});
+			
+			 	$(".btn-primary").click(function(){
+			 		shu=shu+1;
+			 		if(shu==8)
+			 		{
+			 			shu=1;
+			 		}
+  			  $("#music").attr("src","img/"+shu+".mp3");
+  			});
+			 	
+			 	
+			 });
+			
+			 	
+			
+  			
+  			
+  			
+					
+ 				
+		
+			</script>
+			
+			<div id="youxi" data-scroll-reveal="enter right and move 150px over 2s">
+			<div class="main" id="js_main" tabindex="-1">
+					<audio id="music"  autoplay="autoplay">
+  
+  		
+			Your browser does not support the audio element.
+					</audio>
+		
+			<canvas id="canvas" width="320" height="480"></canvas>
+	
+			<div class="life"><label id="js_life"></label></div>
+			<div class="level">第<span id="js_level">0</span>级</div>
+			<div class="start_flush" id="js_start_flush">
+				<a href="javascript:Main.start()" id="js_start_btn" style="display: none ;" class="start_btn" ></a>
+				<span id="js_start_loading" style="position: absolute;left:241px;top: 417px;font-size: 16px;font-weight: bolder;">加载中...</span>		
+			</div>
+			<div class="end_flush" id="js_end_flush">
+				<span class="icon"></span><p></p>
+				<a href="javascript:Main.replay()" class="replay_btn"></a>
+			</div>
+		</div>
+			 <script type="text/javascript" src="js/wfn.js"></script>
+    <script type="text/javascript" src="js/person.js"></script>
+    <script type="text/javascript" src="js/block.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>	
+			</div>
+				
+		</div>
+			
+			
+			
+			
+			
+	<div id="boke" class="boke">
+<div class="jumbotron" id="jinboke">
+					 <div class="container" align="center" >
+  				<h1>To我的博客</h1>
+ 				 <p>多总结，多归纳</p>
+  				<p ><a class="btn btn-primary btn-lg" href="a.html" role="button" data-scroll-reveal="enter right and move 300px over 4s">To My Blog</a></p>
+						 </div>
+					 </div>
+			</div>	
+	
+ 		
+ <div class="contact" id="contact">
+			
+					<div class="contact-top">
+						
+					
+					<div id="yidong">
+					
+						<h3>怎样联系我 ?</h3>
+						<p><span>我的电话:</span>15798064757</p>
+			
+						<p><span>我的电话：</span>clh15798064757</p>
+
+						<p><span>我的QQ：</span>847309456</p>
+					
+						<p><span>我的邮箱：</span>8473099457@qq.com</a></p>
+						
+				
+				</div>	
+			</div>
+				<div id="weixin">
+						
+						<img src="../img/123456.png"  data-scroll-reveal="enter right and move 300px over 2s" />
+				
+				
+				</div>
+ 		</div>
+	
+<script>
+					$( "span.menu" ).click(function() {
+					  $( ".top-nav ul" ).slideToggle( "slow", function() {
+					    // Animation complete.
+					  });
+					});
+					
+					if (!(/msie [6|7|8|9]/i.test(navigator.userAgent))){
+		(function(){
+		window.scrollReveal = new scrollReveal({reset: true});
+			})();
+	};
+				</script>
+
+
+ </body>
+</html>
