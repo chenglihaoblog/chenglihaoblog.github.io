@@ -21,9 +21,18 @@ html,body{
 	padding:4em 0 0 0;
 }
 #xiangmu{
-	height: 1300px;
+	margin-bottom: 200px;
 	}
-
+.jinbokea{
+	100%
+	}
+.lianxi{
+	height: 500px;
+	}
+#shenm{
+	height: 500px;
+	}
+	
 .logos{
 	margin-top:5em;
 }
@@ -42,52 +51,65 @@ html,body{
 	width: 70%;
 	padding: 100px 50px 0px 50px;
 	font-size: 120%;
-	float: left;
+	
 	
 	}
 	#you{
-		float: right;
+		
 		width: 30%;
 		
      }
 	
-#baowei{
+.xiangmuzuo{
 	width: 100%;
 	margin: 30px;
-	overflow: hidden;
+	margin-bottom: 200px;
 		
 }
-#zuoyx{
+#zuoms
+{	
 	width: 70%;
-	float: left;
+	height: 500px;
+	
+	}
+#zuoms{
+	height: 600px;
+	margin: 30px 0px 0px 150px;
 	margin: 0px;
-	padding: 0px 15%;
+	width: 60%;
+	}
+.thumbnail{
+	height: 600px;
+	padding: 0px 5%;
+	border: hidden;
+	width: 90%;
+	margin-left: 10% ;
+	}
+.xiangmuyouxi
+{
+	width: 100%;
+	}
+#zuoms button{
+	position: relative;
+	left: 40%;
 	
+	}
 
-	}
-#zuoyx button{
-	position: relative;
-	left: 80%;
-	
-	}
-.main{
-	
-	}
 #youxi{
-	width: 30%;
-	position: relative;
-	left: 70%;
-	bottom: 600px;
-	padding: 0px 20% 0px 0px;
+	width: 40%;
+	padding-left: 200px;
+	
+	
+	
 	
 }	
-#baowei2{
-	padding: 0px;
-	margin: 0px;
+#boke{
 	
+	height: 500px;
 	}
 	
 #jinboke{
+		height: 500px;
 		background: url(../shouye/img/1be9da1dec13c71ee533f2bf739f1216.jpg)no-repeat;
 		background-size: 100% 100%;
 		color: orange;
@@ -99,7 +121,14 @@ html,body{
 #jinboke:hover{
 	color: skyblue;	
 	}			
-				
+.container{
+	align-content: center;
+	padding-top: 30px;
+	
+	}	
+.container h1{
+	font-size: 52px;
+	}	
 	#jinboke p{
 		font-size: 40px ;
 		}	
@@ -220,6 +249,7 @@ html,body{
   position: relative;
   float: left;
   width: 100%;
+
 }
 .callbacks {
   position: relative;
@@ -827,20 +857,8 @@ ul#filters {
 .container:after { content: "\0020"; display: block; height: 0; clear: both; visibility: hidden; }
 .clearfix:before,
 .clearfix:after,
-.row:before,
-.row:after {
-  content: '\0020';
-  display: block;
-  overflow: hidden;
-  visibility: hidden;
-  width: 0;
-  height: 0; }
-.row:after,
-.clearfix:after {
-  clear: both; }
-.row,
-.clearfix {
-  zoom: 1; }
+
+
 
 .clear {
   clear: both;
@@ -867,10 +885,7 @@ ul#filters {
 .services{
 	margin-top:2em;
 }
-.services-row{
-	margin-top:3em;
-	padding-bottom: 5em;
-}
+
 .services-column{
 	text-align:center;
 }
@@ -1095,7 +1110,7 @@ ul.footer-icons li i:hover {
 	span.text-box input[type="text"] {
 		width: 76%;
 	}
-	.about-row-column {
+		.about-row-column {
 		text-align: center;
 	}
 	.about-row-column img {
@@ -1135,6 +1150,7 @@ ul.footer-icons li i:hover {
 		margin:0 auto;
 		cursor: pointer;
 	}
+	
 	.top-nav ul {
 		display: none;
 	}
@@ -1178,7 +1194,7 @@ ul.footer-icons li i:hover {
 	.about h4 {
 		font-size: 1.3em;
 	}
-	.about-row-column img {
+		.about-row-column img {
 		width: 20%;
 	}
 	.about-column h3 {
@@ -1234,10 +1250,7 @@ ul.footer-icons li i:hover {
 	.services-column h4 {
 		font-size: 1.3em;
 	}
-	.services-row {
-		margin-top: 1em;
-		padding-bottom: 2em;
-	}
+
 	.text textarea {
 		width: 98%;
 	}
@@ -1312,7 +1325,7 @@ ul.footer-icons li i:hover {
 		padding: 0;
 		margin-bottom: 0em;
 	}
-	.about-row {
+		.about-row {
 		padding: 1em 0 1em 0;
 	}
 	blockquote.style1 span {
