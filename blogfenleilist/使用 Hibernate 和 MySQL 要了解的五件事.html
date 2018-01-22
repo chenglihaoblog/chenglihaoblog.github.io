@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta charset="UTF-8">
+	<!-- Bootstrap -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+		
+
+    <script src="../js/jquery-1.11.3.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/scrollReveal.js"></script>
+		<title>使用 Hibernate 和 MySQL 要了解的五件事</title>
+		<link rel="stylesheet" href="../css/blogfeleilist.css" />
+	</head>
+	<body>			
+			<nav class="navbar navbar-default navbar-inverse navbar-fixed-top">
+					<div class="container">
+  			<div class="container-fluid ">
+  
+   	 <!-- Brand and toggle get grouped for better mobile display -->
+   				 <div class="navbar-header">
+     		 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+     
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="a.html">JAVA</a></li>
+        <li><a href="b.html"></a>DATABASE</li>
+        <li><a href="c.html">LINUX</a></li>
+        <li><a href="d.html">HTML5</a></li>
+        <li><a href="e.html">C</a></li>
+        <li><a href="f.html">SPRING</a></li>
+        <li><a href="g.html">STRUTS</a></li>
+        <li><a href="h.html">HIBEINATE</a></li>
+        <li><a href="i.html">BOOTSTRAP</a></li>
+          </ul>
+        </li>
+      </ul>
+    
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="j.html">BOOK</a></li>
+        <li><a href="zhuye.html">BACK</a></li>
+        <li><a href="zhuye.html?#contact">CONTACT ME</a></li>
+        </li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+		</div>
+			</nav>
+		<div id="mainmianban">
+			<h1>使用 Hibernate 和 MySQL 要了解的五件事</h1>
+			<p>使用 JPA 和 Hibernate 的好处之一是它提供了数据库特定方言和功能抽象。 因此，理论上，您可以实现一个应用程序，将其连接到一个受支持的数据库，并且它可以在不用更改任何代码的情况下运行。</p>
+<p>Hibernate 真的很好。 但老实说，您没有想过您的应用程序能与每个支持的数据库完美运行，是吗？</p>
+<p>Hibernate 处理最重要的事情。 但是，如果您希望应用能够运行良好，您仍然需要知道要使用哪种数据库，并相应地调整配置和代码。</p>
+<p>在之前的一篇文章中，我讨论了“<a  href="https://www.thoughts-on-java.org/hibernate-postgresql-5-things-need-know/" class="external" rel="nofollow" target="_blank">如果你想使用 Hibernate 和 PostgreSQL 数据库你需要知道的 6 件事情</a>”。今天我想仔细看看 MySQL 数据库。</p>
+<h2>1、映射：主键</h2>
+<p>处理和创建主键很基础，但也是应用程序最重要的一部分。</p>
+<p>JPA 规范的 @GeneratedValue 注解允许您定义用于创建唯一主键值的策略。您可以选择 SEQUENCE、IDENTITY、TABLE 和 AUTO。</p>
+<p>一般来说，我建议使用 SEQUENCE 策略，因为它允许 Hibernate 使用 JDBC 批处理和其他需要延迟执行 SQL INSERT 语句的优化策略。</p>
+<p>然而，您不能将此策略与 MySQL 数据库一起使用。因为它需要一个数据库序列，恰好 MySQL 不支持此功能。</p>
+<p>因此，您需要在 IDENTITY 和 TABLE 之间进行选择。考虑到 TABLE 策略的性能和可扩展性问题，这很容易作出决定。</p>
+<p>如果您正在使用 MySQL 数据库，则应始终使用 GenerationType.IDENTITY。它使用自动增量（autoincremented ）的数据库列，这是最有效的可用方法。您可以通过使用 @GeneratedValue(strategy = GenerationType.IDENTITY) 注解主键属性来执行此操作。</p>
+<pre class="brush: java; gutter: true">@Entity
+public class Author {
+ 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = &quot;id&quot;, updatable = false, nullable = false)
+    private Long id;
+ 
+    ...
+}</pre>
+<h2>2、映射：Hibernate 5 中 GenerationType.AUTO 问题</h2>
+<p>当您使用 GenerationType.AUTO 时，Hibernate 会根据 Hibernate 方言选择生成策略。如果您需要支持多数据库，以下一种常见的方法。</p>
+<pre class="brush: java; gutter: true">@Entity
+public class Author {
+ 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = &quot;id&quot;, updatable = false, nullable = false)
+    private Long id;
+ 
+    ...
+}</pre>
+<p>在旧版本中，Hibernate 为 MySQL 数据库选择 GenerationType.IDENTITY。 这是一个不错的选择。如之前所述，这是最有效的方法。</p>
+<p>不幸的是此行为在 Hibernate 5 中发生了改变。现在是选择 GenerationType.TABLE，它使用数据库表来生成主键。 这种方法需要大量数据库查询和悲观锁来生成唯一值。</p>
+<pre class="brush: java; gutter: true">14:35:50,959 DEBUG [org.hibernate.SQL] - select next_val as id_val from hibernate_sequence for update
+14:35:50,976 DEBUG [org.hibernate.SQL] - update hibernate_sequence set next_val= ? where next_val=?
+14:35:51,097 DEBUG [org.hibernate.SQL] - insert into Author (firstName, lastName, version, id) values (?, ?, ?, ?)</pre>
+<p>您可以通过定义一个 @GenericGenerator 来避免这一点，以下代码告诉 Hibernate 使用本地策略生成主键值。</p>
+<pre class="brush: java; gutter: true">@Entity
+public class Author {
+ 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = &quot;native&quot;)
+    @GenericGenerator(name = &quot;native&quot;, strategy = &quot;native&quot;)
+    @Column(name = &quot;id&quot;, updatable = false, nullable = false)
+    private Long id;
+ 
+    ...
+}</pre>
+<p>然后，Hibernate 将使用 MySQL 自动增量数据库列生成主键值。</p>
+<pre class="brush: java; gutter: true">14:41:34,255 DEBUG [org.hibernate.SQL] - insert into Author (firstName, lastName, version) values (?, ?, ?)
+14:41:34,298 DEBUG [org.hibernate.id.IdentifierGeneratorHelper] - Natively generated identity: 1</pre>
+<h2>3、映射：只读视图</h2>
+<p>使用 JPA 与 Hibernate，您可以以与任何数据库表相同的方式来映射视图。 只要遵循 Hibernate 的命名约定，您只需要实现一个使用了 @Entity 注解的类，该类的属性为您想要映射的列。</p>
+<p>如果视图是只读的，您应该使用 @Immutable 注解告诉 Hibernate。 然后它将忽略对该实体的所有更改。</p>
+<pre class="brush: java; gutter: true">@Entity
+@Immutable
+public class BookView {
+   
+  @Id
+  @Column(name = &quot;id&quot;, updatable = false, nullable = false)
+  private Long id;
+ 
+  @Column(name = &quot;version&quot;)
+  private int version;
+  
+  @Column
+  private String title;
+  
+  @Column
+  @Temporal(TemporalType.DATE)
+  private Date publishingDate;
+  
+  @Column
+  private String authors;
+   
+  ...
+   
+}</pre>
+<h2>4、查询：MySQL特有的函数与数据类型</h2>
+<p>作为一个数据库，MySQL 使用一组自定义函数和数据类型来扩展 SQL 标准。 其中的例子是 <a  href="https://dev.mysql.com/doc/refman/5.7/en/json.html" class="external" rel="nofollow" target="_blank">JSON 数据类型</a>和 <a  href="https://dev.mysql.com/doc/refman/5.7/en/date-and-time-functions.html#function_sysdate" class="external" rel="nofollow" target="_blank">sysdate 函数</a>。</p>
+<p>JPA 不支持这些，但由于 Hibernate 的 MySQL 方言，您可以使用它们。</p>
+<pre class="brush: java; gutter: true">Query q = em.createQuery(&quot;SELECT a, sysdate() FROM Author a &quot;);
+List&lt;Object[]&gt; results = q.getResultList();</pre>
+<p>如果您发现 Hibernate 的 MySQL 方言不支持的函数或者数据类型，可以使用一个 AttributeConverter 将数据类型转换为受支持的数据类型和使用 JPQL 函数来调用一个 JPQL 查询中的任意函数。</p>
+<p>但请记住，使用数据库特有的函数或数据类型，您可以将应用程序绑定到特定的数据库。如果需要支持不同的数据库，您将需要更改应用程序的这部分代码。</p>
+<h2>5、查询：存储过程</h2>
+<p>许多数据库管理员喜欢在数据库中使用存储过程来执行数据繁重的操作。 大多数情况下，这种方法比在 Java 代码中执行相同的操作要快得多。</p>
+<p>但是，大多数 Java 开发人员并不想使用存储过程。 当然，有一个说法是业务逻辑分布在多个系统上，这使得它更加难测试和理解。 另一个原因是在 JPA 2.1 之前，该规范并没有直接支持存储过程调用。 你必须使用原生查询，总之感觉很复杂。</p>
+<p>这在 JPA 2.1 引入了 StoredProcedureQuery 和 @NamedStoredProcedureQuery 才有所改变。</p>
+<h3>@NamedStoredProcedureQuery</h3>
+<p>@NamedStoredProcedureQuery 注解允许您定义存储过程调用一次，且可通过其名称在业务代码中引用它。 以下代码片段展示了一个简单示例，它定义了存储过程 calculate 的调用，附带了输入参数 x 和 y 以及输出参数 sum。</p>
+<pre class="brush: java; gutter: true">@NamedStoredProcedureQuery(
+    name = &quot;calculate&quot;, 
+    procedureName = &quot;calculate&quot;, 
+    parameters = {  @StoredProcedureParameter(mode = ParameterMode.IN, type = Double.class, name = &quot;x&quot;),
+            @StoredProcedureParameter(mode = ParameterMode.IN, type = Double.class, name = &quot;y&quot;),
+            @StoredProcedureParameter(mode = ParameterMode.OUT, type = Double.class, name = &quot;sum&quot;) })</pre>
+<p>然后，您可以将 @NamedStoredProcedureQuery 的名称提供给 EntityManager 的 createNamedStoredProcedureQuery，以实例化一个新的 StoredProcedureQuery。</p>
+<pre class="brush: java; gutter: true">StoredProcedureQuery query = em.createNamedStoredProcedureQuery(&quot;calculate&quot;);
+query.setParameter(&quot;x&quot;, 1.23d);
+query.setParameter(&quot;y&quot;, 4d);
+query.execute();
+Double sum = (Double) query.getOutputParameterValue(&quot;sum&quot;);</pre>
+<p>您可以在代码段中看到，您可以设置输入参数的值，方法与设置 JPQL 查询的绑定参数值一样。 您只需使用输入参数的名称和值来调用 StoredProcedureQuery 的 setParameter 方法即可。</p>
+<h3>StoredProcedureQuery</h3>
+<p>存储过程调用的编程定义非常类似于前面示例中给出的基于注解的方法。 您只需使用要执行的存储过程的名称配合 EntityManager 调用 createStoredProcedureQuery 即可。有一个 StoredProcedureQuery 接口，您可以使用它来注册存储过程的输入参数和输出参数。</p>
+<pre class="brush: java; gutter: true">StoredProcedureQuery query = em.createStoredProcedureQuery(&quot;calculate&quot;);
+query.registerStoredProcedureParameter(&quot;x&quot;, Double.class, ParameterMode.IN);
+query.registerStoredProcedureParameter(&quot;y&quot;, Double.class, ParameterMode.IN);
+query.registerStoredProcedureParameter(&quot;sum&quot;, Double.class, ParameterMode.OUT);</pre>
+<p>这就是您定义存储过程调用全部需要做的事。 之后，您可以与 @NamedStoredProcedureQuery 一样使用它。 在执行存储过程调用之前，需要设置输入参数值。</p>
+<pre class="brush: java; gutter: true">query.setParameter(&quot;x&quot;, 1.23d);
+query.setParameter(&quot;y&quot;, 4d);
+query.execute();</pre>
+<h2>6、总结</h2>
+<p>如您所见，Hibernate 已经支持大多数 MySQL 特有的功能。 但是，如果要创建一个轻便和性能良好的应用程序，还需要记住一些事项。</p>
+<p>特别是在 Hibernate 5 中生成唯一主键值和 GenerationType.AUTO 的行为的改变，可能会在将应用程序部署到生产环境时产生意外的可扩展性问题。</p>
+		</div>
+<script>
+if (!(/msie [6|7|8|9]/i.test(navigator.userAgent))){
+		(function(){
+		window.scrollReveal = new scrollReveal({reset: true});
+	})();
+};
+$('#myTab a').click(function (e) {
+  e.preventDefault();
+  $(this).tab('show');
+})
+
+$('a[data-toggle="tab"]').on('shown', function (e) {
+  e.target // activated tab
+  
+})
+ 
+</script>
+	</body>
+</html>
+	</body>
+</html>

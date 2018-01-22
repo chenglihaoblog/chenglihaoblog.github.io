@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta charset="UTF-8">
+	<!-- Bootstrap -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+		
+
+    <script src="../js/jquery-1.11.3.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/scrollReveal.js"></script>
+		<title>mysql在linux下的安装</title>
+		<link rel="stylesheet" href="../css/blogfeleilist.css" />
+	</head>
+	<body>			
+			<nav class="navbar navbar-default navbar-inverse navbar-fixed-top">
+					<div class="container">
+  			<div class="container-fluid ">
+  
+   	 <!-- Brand and toggle get grouped for better mobile display -->
+   				 <div class="navbar-header">
+     		 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+     
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="a.html">JAVA</a></li>
+        <li><a href="b.html"></a>DATABASE</li>
+        <li><a href="c.html">LINUX</a></li>
+        <li><a href="d.html">HTML5</a></li>
+        <li><a href="e.html">C</a></li>
+        <li><a href="f.html">SPRING</a></li>
+        <li><a href="g.html">STRUTS</a></li>
+        <li><a href="h.html">HIBEINATE</a></li>
+        <li><a href="i.html">BOOTSTRAP</a></li>
+          </ul>
+        </li>
+      </ul>
+    
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="j.html">BOOK</a></li>
+        <li><a href="zhuye.html">BACK</a></li>
+        <li><a href="zhuye.html?#contact">CONTACT ME</a></li>
+        </li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+		</div>
+			</nav>
+		<div id="mainmianban">
+			<h1>mysql在linux下的安装</h1>
+			<p>安装环境：系统是 centos6.5</p>
+<p>1、下载</p>
+<p>　　　　下载地址：http://dev.mysql.com/downloads/mysql/5.6.html#downloads</p>
+<p>　　　　下载版本：我这里选择的5.6.33，通用版，linux下64位</p>
+<p>　　　　<span style="line-height: 1.5;">也可以直接复制64位的下载地址，通过命令下载：wget&nbsp;</span><span style="line-height: 1.5;">http://dev.mysql.com/get/Downloads/MySQL-5.6/mysql-5.6.33-linux-glibc2.5-x86_64.tar.gz</span></p>
+<p>2、解压</p>
+<div class="cnblogs_Highlighter">
+<pre class="brush:bash;gutter:true;">#解压
+tar -zxvf mysql-5.6.33-linux-glibc2.5-x86_64.tar.gz
+#复制解压后的mysql目录
+cp -r mysql-5.6.33-linux-glibc2.5-x86_64 /usr/local/mysql
+</pre>
+</div>
+<p>3、添加用户组和用户</p>
+<div class="cnblogs_Highlighter">
+<pre class="brush:bash;gutter:true;">#添加用户组
+groupadd mysql
+#添加用户mysql 到用户组mysql
+useradd -g mysql mysql
+</pre>
+</div>
+<p>4、安装</p>
+<div class="cnblogs_Highlighter">
+<pre class="brush:bash;gutter:true;">cd /usr/local/mysql/<br />mkdir ./data/mysql
+chown -R mysql:mysql ./
+./scripts/mysql_install_db --user=mysql --datadir=/usr/local/mysql/data/mysql
+cp support-files/mysql.server /etc/init.d/mysqld
+chmod 755 /etc/init.d/mysqld 
+cp support-files/my-default.cnf /etc/my.cnf
+
+#修改启动脚本
+vi /etc/init.d/mysqld
+
+#修改项：
+basedir=/usr/local/mysql/
+datadir=/usr/local/mysql/data/mysql
+
+#启动服务
+service mysqld start
+
+#测试连接
+./mysql/bin/mysql -uroot
+
+#加入环境变量，编辑 /etc/profile，这样可以在任何地方用mysql命令了
+export PATH=$PATH:/usr/local/mysql//bin<br />source /etc/profile
+
+
+#启动mysql
+service mysqld start
+#关闭mysql
+service mysqld stop
+#查看运行状态
+service mysqld status
+</pre>
+</div>
+<p>5、错误</p>
+<p>　　5.1 sqlyog连接时，报1130错误，是由于没有给远程连接的用户权限问题</p>
+<p>　　　　解决1:更改 &lsquo;mysql&rsquo;数据库&lsquo;user&rsquo;表&lsquo;host&rsquo;项，从&lsquo;localhost&rsquo;改成&lsquo;%&rsquo;。</p>
+<div class="cnblogs_code">
+<pre><span style="color: #000000;">use mysql;
+</span><span style="color: #0000ff;">select</span> <span style="color: #800000;">'</span><span style="color: #800000;">host</span><span style="color: #800000;">'</span> from user where user=<span style="color: #800000;">'</span><span style="color: #800000;">root</span><span style="color: #800000;">'</span><span style="color: #000000;">; 
+update user set host </span>= <span style="color: #800000;">'</span><span style="color: #800000;">%</span><span style="color: #800000;">'</span> where user =<span style="color: #800000;">'</span><span style="color: #800000;">root</span><span style="color: #800000;">'</span><span style="color: #000000;">;
+flush privileges; </span></pre>
+</div>
+<p>　　　　解决2：直接授权</p>
+<p>　　　　　　GRANT ALL PRIVILEGES ON *.* TO &lsquo;root&rsquo;@'%&rsquo; IDENTIFIED BY &lsquo;youpassword&rsquo; WITH GRANT OPTION;</p>
+<p>　　5.2 安装时的一些错误</p>
+<p>　　　　-bash: ./scripts/mysql_install_db: /usr/bin/perl: bad interpreter: 没有那个文件或目录<br />　　　　解决： yum -y install perl perl-devel</p>
+<p>　　　　Installing MySQL system tables..../bin/mysqld: error while loading shared libraries: libaio.so.1: cannot open shared object file: No such file or directory<br />　　　　解决：yum -y install libaio-devel</p>
+<p>6、其他</p>
+<p>　　6.1 配置环境变量</p>
+<p>　　　　vi + /etc/profile</p>
+<p>　　　　export PATH=....:/usr/local/mysql/bin</p>
+
+		</div>
+<script>
+if (!(/msie [6|7|8|9]/i.test(navigator.userAgent))){
+		(function(){
+		window.scrollReveal = new scrollReveal({reset: true});
+	})();
+};
+$('#myTab a').click(function (e) {
+  e.preventDefault();
+  $(this).tab('show');
+})
+
+$('a[data-toggle="tab"]').on('shown', function (e) {
+  e.target // activated tab
+  
+})
+ 
+</script>
+	</body>
+</html>
+	</body>
+</html>

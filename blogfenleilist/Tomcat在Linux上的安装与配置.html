@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta charset="UTF-8">
+	<!-- Bootstrap -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+		
+
+    <script src="../js/jquery-1.11.3.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/scrollReveal.js"></script>
+		<title>Tomcat在Linux上的安装与配置</title>
+		<link rel="stylesheet" href="../css/blogfeleilist.css" />
+	</head>
+	<body>			
+			<nav class="navbar navbar-default navbar-inverse navbar-fixed-top">
+					<div class="container">
+  			<div class="container-fluid ">
+  
+   	 <!-- Brand and toggle get grouped for better mobile display -->
+   				 <div class="navbar-header">
+     		 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+     
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="a.html">JAVA</a></li>
+        <li><a href="b.html"></a>DATABASE</li>
+        <li><a href="c.html">LINUX</a></li>
+        <li><a href="d.html">HTML5</a></li>
+        <li><a href="e.html">C</a></li>
+        <li><a href="f.html">SPRING</a></li>
+        <li><a href="g.html">STRUTS</a></li>
+        <li><a href="h.html">HIBEINATE</a></li>
+        <li><a href="i.html">BOOTSTRAP</a></li>
+          </ul>
+        </li>
+      </ul>
+    
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="j.html">BOOK</a></li>
+        <li><a href="zhuye.html">BACK</a></li>
+        <li><a href="zhuye.html?#contact">CONTACT ME</a></li>
+        </li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+		</div>
+			</nav>
+		<div id="mainmianban">
+			<h2>Tomcat在Linux上的安装与配置</h2>
+<br /><br />
+    以下使用的Linux版本为: Redhat Enterprise Linux 7.0 x86_64，Tomcat版本为tomcat-7.0.54.<br /><br /><br />
+1.下载JDK与Tomcat.<br />
+    jdk下载地址:<br />
+    http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html<br />
+    tomcat下载地址:<br />
+    http://tomcat.apache.org/download-70.cgi<br /><br /><br />
+2.jdk安装与配置.<br />
+    (1)jdk安装<br />
+    rpm包:<br />
+    # rpm -ivh jdk-7u55-linux-x64.rpm<br /><br /><br />
+    tar.gz包:解压缩<br />
+    # mkdir /usr/java<br />
+    # cd /usr/java<br />
+    # tar -zxvf /software/jdk-7u55-linux-x64.tar.gz<br />
+    生成链接以便版本升级<br />
+    # ln -s jdk1.7.0_55 latest<br />
+    # ln -s latest default<br /><br /><br />
+    (2)配置环境变量<br />
+    # vi /etc/profile<br />
+    export JAVA_HOME=/usr/java/default<br />
+    export JAVA_BIN=$JAVA_HOME/bin<br />
+    export PATH=$PATH:$JAVA_HOME/bin<br />
+    export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar<br />
+    export PATH=$JAVA_HOME/bin:$JRE_HOME/bin:$PATH<br /><br /><br />
+    使配置生效<br />
+    # source /etc/profile<br /><br /><br />
+    测试jdk.<br />
+    # java -version<br />
+    java version "1.7.0_55"<br />
+    Java(TM) SE Runtime Environment (build 1.7.0_55-b13)<br />
+    Java HotSpot(TM) 64-Bit Server VM (build 24.55-b03, mixed mode)<br /><br /><br />
+3.Tomcat的安装<br />
+    解压缩<br />
+    # mkdir /usr/local/tomcat<br />
+    # cd /usr/local/tomcat<br />
+    # tar -zxvf /software/apache-tomcat-7.0.54.tar.gz<br />
+    生成链接以便版本升级<br />
+    # ln -s apache-tomcat-7.0.54 server<br /><br /><br />
+    启动Tomcat<br />
+    # cd /usr/local/tomcat/server/bin<br />
+    # ./startup.sh<br />
+    Using CATALINA_BASE: /usr/local/tomcat/server<br />
+    Using CATALINA_HOME: /usr/local/tomcat/server<br />
+    Using CATALINA_TEMDIR: /usr/local/tomcat/server/temp<br />
+    Using JRE_HOME: /usr/java/default<br />
+    Using CLASS_PATH: /usr/local/tomcat/server/bin/bootstrap.jar:/usr/local/tomcat/server/bin/tomcat-juli.jar<br />
+    Tomcat started.<br /><br /><br />
+    测试Tomcat:<br />
+    打开防火墙,使外部能访问<br />
+    # /sbin/iptables -I INPUT -p tcp --dport 8080 -j ACCEPT<br />
+    # service iptables save<br />
+    # service iptables restart<br />
+    或直接修改文件/etc/sysconfig/iptables.<br />
+    # vi /etc/sysconfig/iptables<br />
+    -A INPUT -p tcp -m tcp --dport 8080 -j ACCEPT<br />
+    # service iptables restart<br />
+    在浏览器输入: http://192.168.16.133:8080<br />
+    如在本机可以输入: http://localhost:8080<br />
+    出现tomcat的页面表示安装成功.<br /><br /><br />
+    停止Tomcat<br />
+    # ./shutdown.sh<br /><br /><br />
+4.配置web管理帐号<br />
+   修改文件conf/tomcat-users.xml，在&lt;tomcat-users&gt;元素中添加帐号密码，需要指定角色.<br />
+   # vi /usr/local/tomcat/server/conf/tomcat-users.xml<br />
+     &lt;tomcat-users&gt;<br />
+       &lt;user name="admin" password="admin" roles="admin-gui,manager-gui" /&gt;<br />
+     &lt;/tomcat-users&gt;<br /><br /><br />
+5.配置web访问端口<br />
+   可以修改conf目录下的文件server.xml，修改Connector元素(Tomcat的默认端口是8080)，需要重新启动Tomcat服务生效.<br />
+   # vi /usr/local/tomcat/server/conf/server.xml<br />
+   &lt;Connector port="80" protocol="HTTP/1.1" connectionTimeout="20000" redirectPort="8443" /&gt; <br /><br /><br />
+6.配置https安全连接(ssl加密连接)<br />
+   https连接需要用到数字证书与数字签名(MD5算法)<br />
+   网站https连接首先需要申请数字证书，配置加密连接器，浏览器安装证书.<br />
+   ·使用java的工具keytool产生数字证书<br />
+     # keytool -genkey -alias tomcat -keyalg RSA<br />
+     生成文件.keystore<br />
+     注意:CN为主机名称，本机可用localhost<br />
+   ·将文件.keystore放到Tomcat服务器的conf目录下<br />
+     # cp .keystore /usr/local/tomcat/server/conf/<br />
+   ·修改conf/server.xml文件，修改加密连接器，添加keystoreFile与keystorePass<br />
+    &lt;Connector port="8443" protocol="HTTP/1.1" SSLEnabled="true"<br />
+               maxThreads="150" scheme="https" secure="true"<br />
+               clientAuth="false" sslProtocol="TLS" <br />
+               keystoreFile="conf/.keystore" keystorePass="123456"/&gt;    <br />
+   ·重新启动tomcat.浏览器输入https://localhost:8443访问,并安装证书.<br /><br /><br />
+7.Tomcat的目录结构<br />
+   ·bin     //存放Tomcat的命令脚本文件<br />
+   ·conf    //存放Tomcat服务器的各种配置文件,最主要是server.xml<br />
+   ·lib     //存放Tomcat服务器支撑jar包<br />
+   ·logs    //存放日志文件<br />
+   ·temp    //存放临时文件<br />
+   ·webapps //web应用所在目录，外界访问web资源的存放目录<br />
+   ·work    //Tomcat的工作目录<br /><br /><br />
+8.web应用的目录结构<br />
+   webapp                           -- web应用所在目录<br />
+     |--- html, jsp, css, js文件等  -- 这些文件一般在web应用根目录下，根目录下的文件外界可以直接访问.<br />
+     |--- WEB-INF 目录              -- java类、jar包、web配置文件存在这个目录下，外界无法直接访问，由web服务器负责调用.<br />
+           |--- classes 目录        -- java类<br />
+           |--- lib 目录            -- java类运行所需要的jar包<br />
+           |--- web.xml 文件        -- web应用的配置文件<br /><br /><br />
+9.虚拟主机的配置<br />
+   指定虚拟主机名,修改conf/server.xml,添加&lt;host&gt;元素.<br />
+   &lt;host name="hostname.domainname" appBase="/webapps"&gt;<br />
+     &lt;Context path="/webapp" docBase="/webapps/webapp"/&gt;<br />
+   &lt;/host&gt;<br />
+   例:<br />
+   &lt;host name="www.163.com" appBase="/webapps"&gt;<br />
+   &lt;/host&gt;<br />
+   &lt;host name="mail.163.com" appBase="/mailapps"&gt;<br />
+   &lt;/host&gt;<br />
+   须设置DNS解析(host文件或DNS系统).<br /><br /><br /><br /><br />
+10.web应用和虚拟目录的映射.<br />
+   可以修改xml配置文件的&lt;Context&gt;元素来设置web应用和虚拟目录的映射.<br />
+   ·conf/server.xml         //在&lt;host&gt;元素下添加&lt;Context path="/webdir" docBase="/webappdir"/&gt;,需要重新启动Tomcat服务生效，不建议使用.<br />
+   ·conf/context.xml        //添加&lt;Context&gt;元素所有web应用有效.<br />
+   ·conf/[enginename]/[hostname]/context.xml.default  //[enginename]一般是Catalina，主机[hostname]的所有web应用有效.<br />
+   ·conf/[enginename]/[hostname]/   //在目录下任意建一个文件(扩展名xml),文件名即为虚拟目录名.多级目录使用#分割. &lt;Context docBase="/webappdir"/&gt;<br />
+                                     //缺省值web应用目录可以定义为ROOT.xml，添加&lt;Context docBase="/webappdir"/&gt;,需重新启动Tomcat服务器.<br />
+   ·META-INF/context.xml    //<br />
+   可以将web应用放在webapps目录下让Tomcat服务器自动映射，适用开发环境，实际运用环境中不用自动映射。<br />
+   如没有修改配置文件，web应用目录为ROOT时则为默认web应用。<br /><br /><br />
+11.web应用首页(welcome file)的配置<br />
+   修改web应用的配置文件: [webapp]/WEB-INF/web.xml<br />
+		</div>
+<script>
+if (!(/msie [6|7|8|9]/i.test(navigator.userAgent))){
+		(function(){
+		window.scrollReveal = new scrollReveal({reset: true});
+	})();
+};
+$('#myTab a').click(function (e) {
+  e.preventDefault();
+  $(this).tab('show');
+})
+
+$('a[data-toggle="tab"]').on('shown', function (e) {
+  e.target // activated tab
+  
+})
+ 
+</script>
+	</body>
+</html>
+	</body>
+</html>

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta charset="UTF-8">
+	<!-- Bootstrap -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+		
+
+    <script src="../js/jquery-1.11.3.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/scrollReveal.js"></script>
+		<title>关于Spring的知识</title>
+		<link rel="stylesheet" href="../css/blogfeleilist.css" />
+	</head>
+	<body>			
+			<nav class="navbar navbar-default navbar-inverse navbar-fixed-top">
+					<div class="container">
+  			<div class="container-fluid ">
+  
+   	 <!-- Brand and toggle get grouped for better mobile display -->
+   				 <div class="navbar-header">
+     		 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+     
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="a.html">JAVA</a></li>
+        <li><a href="b.html"></a>DATABASE</li>
+        <li><a href="c.html">LINUX</a></li>
+        <li><a href="d.html">HTML5</a></li>
+        <li><a href="e.html">C</a></li>
+        <li><a href="f.html">SPRING</a></li>
+        <li><a href="g.html">STRUTS</a></li>
+        <li><a href="h.html">HIBEINATE</a></li>
+        <li><a href="i.html">BOOTSTRAP</a></li>
+          </ul>
+        </li>
+      </ul>
+    
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="j.html">BOOK</a></li>
+        <li><a href="zhuye.html">BACK</a></li>
+        <li><a href="zhuye.html?#contact">CONTACT ME</a></li>
+        </li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+		</div>
+			</nav>
+		<div id="mainmianban">
+			<h1>关于Spring的知识</h1>
+			<h2 id="String常量池">String常量池</h2>
+<p>String常量可能会在两种时机进入常量池：</p>
+<ol>
+<li>编译期：通过双引号声明的常量（包括<em>显示声明</em>、<em>静态编译优化</em>后的常量，如”1”+”2”优化为常量”12”），在前端编译期将被静态的写入class文件中的“常量池”。该“常量池”会在类加载后被载入“内存中的常量池”，也就是我们平时所说的常量池。同时，<em>JIT优化</em>也可能产生类似的常量。</li>
+</ol>
+<ul>
+<li>运行期：调用String#intern()方法，可能将该String对象动态的写入上述“内存中常量池”。</li>
+</ul>
+<p>时机1的行为是明确的。原理可阅读class文件结构、类加载、编译期即运行期优化等内容。</p>
+<p>时机2在jdk6和jdk7中的行为不同，下面讨论。</p>
+<h2 id="String-intern">String#intern()</h2>
+<p>读者可直接阅读参考资料。下述总结仅为了猴子自己复习方便。</p>
+<h3 id="声明">声明</h3>
+<pre class="brush: java; gutter: true">/** 
+ * Returns a canonical representation for the string object. 
+ * &lt;p&gt; 
+ * A pool of strings, initially empty, is maintained privately by the 
+ * class &lt;code&gt;String&lt;/code&gt;. 
+ * &lt;p&gt; 
+ * When the intern method is invoked, if the pool already contains a 
+ * string equal to this &lt;code&gt;String&lt;/code&gt; object as determined by 
+ * the {@link #equals(Object)} method, then the string from the pool is 
+ * returned. Otherwise, this &lt;code&gt;String&lt;/code&gt; object is added to the 
+ * pool and a reference to this &lt;code&gt;String&lt;/code&gt; object is returned. 
+ * &lt;p&gt; 
+ * It follows that for any two strings &lt;code&gt;s&lt;/code&gt; and &lt;code&gt;t&lt;/code&gt;, 
+ * &lt;code&gt;s.intern() == t.intern()&lt;/code&gt; is &lt;code&gt;true&lt;/code&gt; 
+ * if and only if &lt;code&gt;s.equals(t)&lt;/code&gt; is &lt;code&gt;true&lt;/code&gt;. 
+ * &lt;p&gt; 
+ * All literal strings and string-valued constant expressions are 
+ * interned. String literals are defined in section 3.10.5 of the 
+ * &lt;cite&gt;The Java™ Language Specification&lt;/cite&gt;. 
+ * 
+ * @return  a string that has the same contents as this string, but is 
+ *          guaranteed to be from a pool of unique strings. 
+ */  
+public native String intern();</pre>
+<p>String#intern()是一个native方法。根据Javadoc，如果常量池中存在当前字符串, 就会直接返回当前字符串. 如果常量池中没有此字符串, 会将此字符串放入常量池中后, 再返回。</p>
+<h3 id="实现原理">实现原理</h3>
+<p>JNI最后调用了c++实现的StringTable::intern()方法：</p>
+<pre class="brush: java; gutter: true">oop StringTable::intern(Handle string_or_null, jchar* name,  
+                        int len, TRAPS) {  
+  unsigned int hashValue = java_lang_String::hash_string(name, len);  
+  int index = the_table()-&gt;hash_to_index(hashValue);  
+  oop string = the_table()-&gt;lookup(index, name, len, hashValue);  
+  // Found  
+  if (string != NULL) return string;  
+  // Otherwise, add to symbol to table  
+  return the_table()-&gt;basic_add(index, string_or_null, name, len,  
+                                hashValue, CHECK_NULL);  
+}
+oop StringTable::lookup(int index, jchar* name,  
+                        int len, unsigned int hash) {  
+  for (HashtableEntry&lt;oop&gt;* l = bucket(index); l != NULL; l = l-&gt;next()) {  
+    if (l-&gt;hash() == hash) {  
+      if (java_lang_String::equals(l-&gt;literal(), name, len)) {  
+        return l-&gt;literal();  
+      }  
+    }  
+  }  
+  return NULL;  
+}</pre>
+<p>在the_table()返回的hash表中查找字符串，如果存在就返回，否则加入表。</p>
+<p>StringTable是一个固定大小的Hashtable，默认大小是1009。基本逻辑与Java中HashMap相同，也使用拉链法解决碰撞问题。</p>
+<p>既然是拉链法，那么如果放进的String非常多，就会加剧碰撞，导致链表非常长。最坏情况下，String#intern()的性能由O(1)退化到O(n)。</p>
+<blockquote>
+<ul>
+<li>jdk6中StringTable的长度固定为1009。</li>
+<li>jdk7中，StringTable的长度可以通过一个参数<code>-XX:StringTableSize</code>指定，默认1009。</li>
+</ul>
+</blockquote>
+<h3 id="jdk6和jdk7下String-intern-的区别">jdk6和jdk7下String#intern()的区别</h3>
+<p id="引言"><strong>引言</strong></p>
+<p>相信很多Java程序员都做类似<code>String s = new String("abc");</code>这个语句创建了几个对象的题目。这种题目主要是为了考察程序员对字符串对象常量池的掌握。上述的语句中创建了2个对象：</p>
+<ul>
+<li>第一个对象，内容”abc”，存储在常量池中。</li>
+<li>第二个对象，内容”abc”，存储在堆中。</li>
+</ul>
+<p id="问题"><strong>问题</strong></p>
+<p>来看一段代码：</p>
+<pre class="brush: java; gutter: true">public static void main(String[] args) {
+    String s = new String(&quot;1&quot;);
+    s.intern();
+    String s2 = &quot;1&quot;;
+    System.out.println(s == s2);
+    String s3 = new String(&quot;1&quot;) + new String(&quot;1&quot;);
+    s3.intern();
+    String s4 = &quot;11&quot;;
+    System.out.println(s3 == s4);
+}</pre>
+<p>打印结果：</p>
+<pre class="brush: java; gutter: true"># jdk6下
+false false
+# jdk7下
+false true</pre>
+<p>具体为什么稍后再解释，然后将<code>s3.intern();</code>语句下调一行，放到<code>String s4 = "11";</code>后面。将<code>s.intern();</code>放到<code>String s2 = "1";</code>后面：</p>
+<pre class="brush: java; gutter: true">public static void main(String[] args) {
+    String s = new String(&quot;1&quot;);
+    String s2 = &quot;1&quot;;
+    s.intern();
+    System.out.println(s == s2);
+    String s3 = new String(&quot;1&quot;) + new String(&quot;1&quot;);
+    String s4 = &quot;11&quot;;
+    s3.intern();
+    System.out.println(s3 == s4);
+}</pre>
+<p>打印结果：</p>
+<pre class="brush: java; gutter: true"># jdk6下
+false false
+# jdk7下
+false false</pre>
+<p id="jdk6的解释"><strong>jdk6的解释</strong></p>
+<p style="text-align: center;"><a  href="http://www.importnew.com/27694.html/jdk6%e4%bb%a3%e7%a0%81" rel="attachment wp-att-27696"><img class="aligncenter size-full wp-image-27696" title="jdk6代码" src="http://incdn1.b0.upaiyun.com/2017/12/68afc78f039088cb32f100b979c6f076.jpg" alt="" /></a></p>
+<blockquote><p>注：图中绿色线条代表String对象的内容指向；黑色线条代表地址指向。</p></blockquote>
+<p>jdk6中，上述的所有打印都是false。</p>
+<p>因为jdk6的常量池放在Perm区中，和正常的Heap（指Eden、Surviver、Old区）完全分开。具体来说：使用引号声明的字符串都是通过编译和类加载直接载入常量池，位于Perm区；new出来的String对象位于Heap（E、S、O）中。拿一个Perm区的对象地址和Heap中的对象地址进行比较，肯定是不相同的。</p>
+<p>Perm区主要存储一些加载类的信息、静态变量、方法片段、常量池等。</p>
+<p><strong>jdk7的解释</strong></p>
+<p>在jdk6及之前的版本中，字符串常量池都是放在Perm区的。Perm区的默认大小只有4M，如果多放一些大字符串，很容易抛出<code>OutOfMemoryError: PermGen space</code>。</p>
+<p>因此，jdk7已经将字符串常量池从Perm区移到正常的Heap（E、S、O）中了。</p>
+<blockquote><p>Perm区即永久代。本身用永久代实现方法区就容易遇到内存溢出；而且方法区存放的内容也很难估计大小，没必要放在堆中管理。jdk8已经取消了永久代，在堆外新建了一个Metaspace实现方法区。</p></blockquote>
+<p>正是因为字符串常量池移到了Heap中，才产生了上述变化。</p>
+<p id="第一段代码"><strong>第一段代码</strong></p>
+<p><img src="http://oh4pp6966.bkt.clouddn.com/static/images/String%E5%B8%B8%E9%87%8F%E6%B1%A0%E5%92%8CString-intern/jdk7%E4%BB%A3%E7%A0%81-1.png" alt="jdk7代码-1" /></p>
+<p>先看s3和s4：</p>
+<ul>
+<li>首先，<code>String s3 = new String("1") + new String("1");</code>，生成了多个对象，s3最终指向堆中的”11”。注意，此时常量池中是没有字符串”11”的。</li>
+<li>然后，<code>s3.intern();</code>，将s3中的字符串”11”放入了常量池中，因为此时常量池中不存在字符串”11”，因此常规做法与跟jdk6相同，在常量池中生成一个String对象”11”——然而，jdk7中常量池不在Perm区中了，相应做了调整：常量池中不需要再存储一份对象了，而是直接存储堆中的引用，也就是s3的引用地址。</li>
+<li>接下来，<code>String s4 = "11";</code>，”11”通过双引号显示声明，因此会直接去常量池中查找，如果没有再创建。发现已经有这个字符串了，也就是刚才通过<code>s3.intern();</code>存储在常量池中的s3的引用地址。于是，直接返回s3的引用地址，s4赋值为s3的引用，s4指向堆中的”11”。</li>
+<li>最后，s3、s4指向的堆中的”11”，常量池中存储s3的引用，满足<code>s3 == s4</code>。</li>
+</ul>
+<p>再看s和s2：</p>
+<ul>
+<li>首先，<code>String s = new String("1");</code>，生成了2个对象，常量池中的”1”和堆中的”1”，s指向堆中的”1”。</li>
+<li>然后，<code>s.intern();</code>，上一句已经在常量池中创建了”1”，所以此处什么都不做。</li>
+<li>接下来，，<code>String s2 = "1";</code>，常量池中有”1”，因此，s2直接指向常量池中的”1”。</li>
+<li>最后，s指向的堆中的”1”，s2指向常量池中的”1”，常量池中存储字符串”1”，不满足<code>s == s2</code>。</li>
+</ul>
+<p id="第二段代码"><strong>第二段代码</strong></p>
+<p><img src="http://oh4pp6966.bkt.clouddn.com/static/images/String%E5%B8%B8%E9%87%8F%E6%B1%A0%E5%92%8CString-intern/jdk7%E4%BB%A3%E7%A0%81-2.png" alt="jdk7代码-2" /></p>
+<p>先看s3和s4，将<code>s3.intern();</code>放在了<code>String s4 = "11";</code>后：</p>
+<ul>
+<li>先执行<code>String s4 = "11";</code>，此时，常量池中不存在”11”，因此，将”11”放入常量池，然后s4指向常量池中的”11”。</li>
+<li>再执行<code>s3.intern();</code>，上一句已经在常量池中创建了”11”，所以此处什么都不做。</li>
+<li>最后，s3仍指向的堆中的”11”，s4指向常量池中的”11”，常量池中存储字符串”11”，不再满足<code>s3 == s4</code>。</li>
+</ul>
+<p>再看s和s2，将<code>s.intern();</code>放到<code>String s2 = "1";</code>后：</p>
+<ul>
+<li>先执行<code>String s2 = "1";</code>，之前已通过<code>String s = new String("1");</code>在常量池中创建了”1”，因此，s2直接指向常量池中的”1”。</li>
+<li>再执行<code>s.intern();</code>，常量池中有”1”，所以此处什么都不做。</li>
+<li>最后，s指向的堆中的”1”，s2指向常量池中的”1”，常量池中存储字符串”1”，仍不满足<code>s == s2</code>。</li>
+</ul>
+<p id="区别小结"><strong>区别小结</strong></p>
+<p>jdk7与jdk6相比，对String常量池的位置、String#intern()的语义都做了修改：</p>
+<ul>
+<li>将String常量池从Perm区移到了Heap区。</li>
+<li>调用String#intern()方法时，堆中有该字符串而常量池中没有，则直接在常量池中保存堆中对象的引用，而不会在常量池中重新创建对象。</li>
+</ul>
+		</div>
+<script>
+if (!(/msie [6|7|8|9]/i.test(navigator.userAgent))){
+		(function(){
+		window.scrollReveal = new scrollReveal({reset: true});
+	})();
+};
+$('#myTab a').click(function (e) {
+  e.preventDefault();
+  $(this).tab('show');
+})
+
+$('a[data-toggle="tab"]').on('shown', function (e) {
+  e.target // activated tab
+  
+})
+ 
+</script>
+	</body>
+</html>
+	</body>
+</html>

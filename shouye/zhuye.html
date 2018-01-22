@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+  
     <title>程立豪的技术博客</title>
        
 		
@@ -26,7 +27,7 @@
 <div class="header" id="home">
 		<div class="container">
 			<div class="logos">
-				<a href="index.html"><img src="../img/logo.jpg" alt=""></a>
+				<a href="index.html"><img src="../img/logo.jpg" class="img-circle" height="165" width="165" alt=""></a>
 			</div>
 			<!--- banner Slider starts Here --->
 	  			<script src="../js/responsiveslides.min.js"></script>
@@ -106,15 +107,18 @@
 		<div class="container"  data-scroll-reveal="enter from the bottom after 0.5s">
 			<script src="js/scrollReveal.js"></script> 
 
-
+				<div class="row jianjie">
+					<div class="col-md-12">
+				
 			<h3 class="top-title">我的简介</h3>
 			<h4>一个更善于解决问题的挑战者</h4>
 			<p align="center">萍乡学院  电子信息工程  本科</p>
 			<p class="show-not">就读与萍乡学院 机电系 电子信息工程专业，经过深入的学习以及对以后的职业规划，专业分为两个大致方向，一个是与硬件处理，电子设备与信息系统的设计、开发、应用和集成。基于最小系统的自动控制,以及信号处理方向。另一个软件开发应用方向，基于汇编，c语言，C++/Java 等编程语言的实际软件开发，而本人更加热爱编程，爱好逻辑思维，走的是软件开发应用方向，在学习了C语言后考过全国C语言二级，并开始深入学习Java开发，<b>在校期间参加过计算机协会，参加过校园网站建设
 			熟悉动态与静态网页编写，参加过协会网上商城项目实战开发并担任组长，与HTML5小游戏的设计开发等</b>。善于解决开发中碰到的各种实际问题，与团队成员的协作沟通。敢于接收新的挑战，热爱Codeing ,热爱工作，热爱生活。
 			</p>
+			</div>
 		</div>
-
+		</div>
 			<div id="kuan" data-scroll-reveal="enter left and move 50px over 2s">
 			<div class="row about-row">
 				<div class="col-md-3 about-row-column">
@@ -123,12 +127,13 @@
 				<div class="col-md-9 about-column">
 					<h3><b>程立豪</b></h3>
 					<h4><b>Java工程师</b></h4>
-					<p><b>扎实的Java基础，熟悉Html5,CSS3,JSP,EL TL表达式<br>熟悉bootstrap框架的使用，Script脚本，JQUery,Json数据传输，了解Ajax<br>掌握Mysql数据库操作，熟悉Linux系统(最小系统)，了解shell，熟悉Struts2框架,Spring框架，hibernate5框架，单个框架的搭建，以及SSH框架整合<br>熟练使用IDE工具  Eclipse 以及更友好的Html5的前端工具 HBuilder 以及版本控制SVN</b></p>
+					<p><b>扎实的Java基础，熟悉Html5,CSS3,JSP,EL TL表达式<br>熟悉bootstrap框架的使用，Script脚本，JQUery,Json数据传输，了解Ajax<br>掌握Mysql数据库操作，熟悉Linux系统(最小系统)，了解shell，熟悉Struts2框架,Spring框架，hibernate5框架，单个框架的搭建，以及SSH框架整合<br>熟悉TOMCAT服务器 熟练使用IDE工具  Eclipse 以及更友好的Html5的前端工具 HBuilder 以及版本控制SVN</b></p>
 					<h5>MY Skills</h5>
 				<p>Java</p><div id="progressbar"><div id="progress" ><div id="pbaranim">75%</div></div></div>
 				<p>Html5</p><div id="progressbar"><div id="progress" ><div id="pbaranim">80%</div></div></div>
 				<p>Css3</p><div id="progressbar"><div id="progress" ><div id="pbaranim">75%</div></div></div>
 				<p>Jsp</p><div id="progressbar"><div id="progress" ><div id="pbaranim">70%</div></div></div>
+					<p>...........</p>
 					<ul class="social">
 						<li><i class="fa"></i></li>
 						<li><i class="tw"></i></li>
@@ -352,13 +357,8 @@
 			</div>	
 		</div>
  <div class="contact" id="contact">
- 		<div class="row lianxi">
-			<div class="col-md-12" id="shenm">
-					<div class="contact-top">
-						
-					
-					<div id="yidong">
-					
+ 		<div class="row lianxi">			
+					<div id="lianxizuo" class="col-md-4">		
 						<h3>怎样联系我 ?</h3>
 						<p><span>我的电话:</span>15798064757</p>
 			
@@ -368,19 +368,23 @@
 					
 						<p><span>我的邮箱：</span>8473099457@qq.com</a></p>
 						
-				
-				</div>	
 			</div>
-				<div id="weixin">
-						
-						<img src="../img/123456.png"  data-scroll-reveal="enter right and move 300px over 2s" />
-				
-				
+				<div id="weixin" class="col-md-8" >				
+						<img src="../img/123456.png"  data-scroll-reveal="enter right and move 300px over 2s" />			
 				</div>
  		</div>
  		</div>
 	</div>
 <script>
+<script type="text/javascript" src="js/easing.js"></script>
+					<script type="text/javascript">
+					jQuery(document).ready(function($) {
+						$(".scroll").click(function(event){		
+							event.preventDefault();
+							$('html,body').animate({scrollTop:$(this.hash).offset().top},1000);
+						});
+					});
+
 					$( "span.menu" ).click(function() {
 					  $( ".top-nav ul" ).slideToggle( "slow", function() {
 					    // Animation complete.
@@ -393,7 +397,6 @@
 			})();
 	};
 				</script>
-
-
+<body style="overflow:-Scroll;overflow-x:hidden">
  </body>
 </html>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta charset="UTF-8">
+	<!-- Bootstrap -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+		
+
+    <script src="../js/jquery-1.11.3.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/scrollReveal.js"></script>
+		<title>简单了解JVM 之内存结构</title>
+		<link rel="stylesheet" href="../css/blogfeleilist.css" />
+	</head>
+	<body>			
+			<nav class="navbar navbar-default navbar-inverse navbar-fixed-top">
+					<div class="container">
+  			<div class="container-fluid ">
+  
+   	 <!-- Brand and toggle get grouped for better mobile display -->
+   				 <div class="navbar-header">
+     		 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+     
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="a.html">JAVA</a></li>
+        <li><a href="b.html"></a>DATABASE</li>
+        <li><a href="c.html">LINUX</a></li>
+        <li><a href="d.html">HTML5</a></li>
+        <li><a href="e.html">C</a></li>
+        <li><a href="f.html">SPRING</a></li>
+        <li><a href="g.html">STRUTS</a></li>
+        <li><a href="h.html">HIBEINATE</a></li>
+        <li><a href="i.html">BOOTSTRAP</a></li>
+          </ul>
+        </li>
+      </ul>
+    
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="j.html">BOOK</a></li>
+        <li><a href="zhuye.html">BACK</a></li>
+        <li><a href="zhuye.html?#contact">CONTACT ME</a></li>
+        </li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+		</div>
+			</nav>
+		<div id="mainmianban">
+			<h1>简单了解JVM 之内存结构</h1>
+			<p>今天的一点一滴探究JVM系列，打算复习一下jvm内存结构！至于学习这块知识的好处？一，从面试的角度来看，你了解jvm，并且java基础扎实，你才更有竞争力(因为我本人本科还没毕业，所以考虑问题经常从面试者的角度来考虑)。其二，提高你对java的理解，知道你创建的每一个对象，每一个变量，都在什么地方，如果不知道这些稀里糊涂得写代码，总会有一天会”翻车”的！好了，废话不多说了，我们开始正题吧！</p>
+<h2>开始之前</h2>
+<p>Java与C++之间有一堵由内存动态分配和垃圾收集技术所围成的”墙”, 墙外的人想进去，墙内的人想出来。<br />
+或许你经常看到StackOverFlowError， OutOfMemoryError无从下手，因为你压根不知道，究竟是什么东西造成内存爆了，当然，你也无法解决！</p>
+<p>举个简单的例子</p>
+<pre class="brush: java; gutter: true">public class test {
+    private int f() {
+        f();
+    }
+    public static void main(String[] args) {
+        f();
+    }
+}</pre>
+<p>这个简单的递归，不对，它不算是递归，因为没有终止条件，但是你知道它最终会报什么错误，知道为什么会报这个错误吗？究竟是那块内存发生了错误?</p>
+<p>这个问题，我们留在后面回答，是留在后面你自己解答，看完这篇博文，不用我说，这些问题你都会很清楚！相信我！</p>
+<h2>目标</h2>
+<p>你可能会好奇，你看完这篇文章你能学到什么?</p>
+<ul>
+<li>清楚你的对象会被分配在哪里(不绝对)</li>
+<li>理解哪些区域对线程来说是私有区，哪些区域是线程共享区域</li>
+<li>知道方法调用发生了什么？</li>
+<li>…</li>
+</ul>
+<p>等等等，你可能还会解释你以前遇到一些匪夷所思的问题！总之，你如果之前没了解过这些知识，那么这些东西对你来说，就是成长！</p>
+<h2>墙内的世界</h2>
+<p>你可能很好奇，墙内究竟是什么样？接下来跟着我一探究竟</p>
+
+<p>上图就是jvm比较详细的内存划分，下面我们来按线程私有共享来划分jvm内存区</p>
+<p style="text-align: center;"> 
+<p>下面我们来着重介绍一下这几块内存区域</p>
+<h2>程序计数器(Program Counter Register)</h2>
+<p>什么是程序计数器呢，学过汇编的都知道，cs:ip组成的物理地址是下一条要执行的指令的地址，来吧！看图</p>
+<p>我们可以很清楚的看到，当前cs:ip指向的内存地址恰好就是我们要执行的下一条指令的位置，前面我们图中(按线程私有共享划分jvm内存的图)又说了，程序计数器是线程私有的，再联想一下我举cs:ip的例子，我们可以很自然的想到，程序计数器其实就是记录线程当前执行到了哪一条指令，因为什么要记录这个值呢？因为，如果我们有很多个线程，线程执行顺序又是不可预料的，假如某一时刻我们在执行线程A里面的指令，然后线程B又获得了cpu的资源，去执行去线程B的指令，假如再过了一段时间之后，A又获得了cpu的资源，想吃回头草，此时回到线程A执行，它不知道要执行线程A的哪条指令！这是没有程序计数器所形成的尴尬局面，但是有了线程私有的程序计数器，这个问题就不存在了，这就是程序计数器出现的原因，以及它的用处，我想你看完这段文字，应该已经对程序计数器这个概念完全理解了！</p>
+<p>另外，我需要说明的一点是，程序计数器是Java虚拟机规范中唯一一个没有规定任何内存错误的区域！</p>
+<h2>虚拟机栈(Vm Stack)</h2>
+<p>这块区域是干啥的？为啥也是线程私有的？</p>
+<p>虚拟机栈描述的是Java方法执行的内存模型<br />
+我们来解读这句话，为什么说Vm Stack是描述Java方法执行的内存模型呢？其实：</p>
+<p>每个方法执行的时候都会创建一个栈帧(Stack Frame)的东西，学过c/c++的应该都对这个概念熟悉。栈帧用于存储局部变量表、操作数栈、动态链接、方法出口信息等。每个方法从调用开始到结束的过程，都对应这Vm Stack中的入栈出栈的过程！这也就能回答开头我们看到的那个问题了，很简单错误在单线程情况下肯定是StackOverFlowError，多线程下OutOfMemoryError(上图已经写得很清楚了)</p>
+<p>比如</p>
+<pre class="brush: java; gutter: true">public void test() {
+    String name = &quot;stormma&quot;;
+    int age = 21;
+}</pre>
+<p>上面的例子的age变量和name引用都是存储在虚拟机栈的栈帧里面的(因为我们前面说过了，一个方法从开始调用到结束调用的过程都对应着一个Vm Stack出栈入栈的过程)。</p>
+<p>我们前面说了，这块区域存储了局部变量表，操作数栈，动态链接，还有方法出口信息等，我想你应该比较好奇这几个概念。</p>
+<ul>
+<li>局部变量表: 局部变量表是一组变量值存储空间，用于存放方法参数和方法内部定义的局部变量，其中存放的数据的类型是编译期可知的各种基本数据类型、对象引用(reference)和(returnAddress)类型（它指向了一条字节码指令的地址）。局部变量表所需的内存空间在编译期间完成计算的，即在Java程序被编译成Class文件时，就确定了所需分配的最大局部变量表的容量。当进入一个方法时，这个方法需要在栈中分配多大的局部变量空间是完全确定的，在方法运行期间不会改变局部变量表的大小。</li>
+<li>操作数栈: 操作数栈又常被称为操作栈，操作数栈的最大深度也是在编译的时候就确定了。32位数据类型所占的栈容量为1, 64位数据类型所占的栈容量为2。当一个方法开始执行时，它的操作栈是空的，在方法的执行过程中，会有各种字节码指令（比如：加操作、赋值元算等）向操作栈中写入和提取内容，也就是入栈和出栈操作。Java虚拟机的解释执行引擎称为“基于栈的执行引擎”，其中所指的“栈”就是操作数栈。因此我们也称Java虚拟机是基于栈的，这点不同于Android虚拟机，Android虚拟机是基于寄存器的。基于栈的指令集最主要的优点是可移植性强，主要的缺点是执行速度相对会慢些；而由于寄存器由硬件直接提供，所以基于寄存器指令集最主要的优点是执行速度快，主要的缺点是可移植性差</li>
+<li>动态链接: 每个栈帧都包含一个指向运行时常量池（在方法区中，后面介绍）中该栈帧所属方法的引用，持有这个引用是为了支持方法调用过程中的动态连接。Class文件的常量池中存在有大量的符号引用，字节码中的方法调用指令就以常量池中指向方法的符号引用为参数。这些符号引用，一部分会在类加载阶段或第一次使用的时候转化为直接引用（如 final、static 域等），称为静态解析，另一部分将在每一次的运行期间转化为直接引用，这部分称为动态连接。</li>
+<li>方法返回地址: 当一个方法被执行后，有两种方式退出该方法：执行引擎遇到了任意一个方法返回的字节码指令或遇到了异常，并且该异常没有在方法体内得到处理。无论采用何种退出方式，在方法退出之后，都需要返回到方法被调用的位置，程序才能继续执行。方法返回时可能需要在栈帧中保存一些信息，用来帮助恢复它的上层方法的执行状态。一般来说，方法正常退出时，调用者的PC计数器的值就可以作为返回地址，栈帧中很可能保存了这个计数器值，而方法异常退出时，返回地址是要通过异常处理器来确定的，栈帧中一般不会保存这部分信息。方法退出的过程实际上等同于把当前栈帧出站，因此退出时可能执行的操作有：恢复上层方法的局部变量表和操作数栈，如果有返回值，则把它压入调用者栈帧的操作数栈中，调整PC计数器的值以指向方法调用指令后面的一条指令。</li>
+</ul>
+<p>我想关于这个区域的东西我已经介绍完了，我想你也应该懂了。</p>
+<p>下面我们来下一个区域: 堆(heap)</p>
+<h2>堆(Heap)</h2>
+<p>堆区，是一块很有意思的区域，为啥有意思，因为这块区域是所有线程共享的，也是我们大部分的对象的聚居地(为啥说是大部分呢？这个概念我们之后的文章会进行详细的讲解，如果你特别好奇，可以看一下我之前的文章, Java逃逸分析)！也是jvm管理的最大一块内存(对了，上面的图的大小不代表内存占比，只是为了看着舒服而已)!也是gc开展工作的主要区域。</p>
+<p>堆内存中分为一块区域，用于存储类信息，静态变量等等数据，这一块区域之前叫做方法区后面又叫永久带，之后改名叫做Meta-Area/Meta Space Area，元数据空间，名字不重要，我们要清楚这块区域是什么作用就行了！</p>
+<p><strong>Meta-Area</strong></p>
+<p>这块区域也是线程共享的区域，它主要存储jvm加载类的类信息，类变量，常量(这个在meta-area的常量区)，即时编译器编译后的代码等数据。</p>
+<p><strong>运行时常量区</strong></p>
+<p>这个区域是Meta-Area的一部分，用于存放编译器生成的各种字面量和符号引用，这部分内容将在类加载后存放到方法区的运行时常量池中。这在我们的上一篇博客有所涉及。</p>
+<p>枯燥概念性的东西看完之后，我们来看一个例子，来加深一下这块的印象：</p>
+<pre class="brush: java; gutter: true">public void test() {
+    Object obj = new Object();
+}</pre>
+<p>对于这段代码会涉及Vm Stack、Java Heap、Meta-Area三个最重要的内存区域。</p>
+<p>结合我们前面的例子，因为test()方法涉及到Vm Stack区，我想你应该明白，obj会存放在局部变量表中，new Object()，我们前面说过我们大部分的对象都会存储在Java Heap这个区域，所以，Java Heap存储了这个实例对象！那么你会很好奇，Meta-Area为啥会涉及到呢？</p>
+<p>我们知道Meta-Area存储了类的信息，类变量常量等等东西！因为我们实例化Object对应的时候，要用到Object这个类的信息，所以它会访问Meta-Area的Object.class这个Class对象来获得一些实例化对象需要的东西。</p>
+<p>对了，作为补充，我想你还需要知道, obj引用怎么你能访问到Java Heap区的那个实例化对象</p>
+<p>有两种方式，一种使用过句柄指针(学过c/c++对这些概念应该会很熟悉)</p>
+<p>还有一种就是通过指针直接访问</p>
+<p>上图来自深入理解JVM一书</p>
+<h2>本地方法栈(Native Method Stack)</h2>
+<p>这块区域相对来说，没有前面几个概念重要。</p>
+<p>该区域与虚拟机栈所发挥的作用非常相似，只是虚拟机栈为虚拟机执行Java方法服务，而本地方法栈则为使用到的本地操作系统（Native）方法服务。</p>
+<p>比如Java调用c/c++/汇编就用到这块区域</p>
+		</div>
+<script>
+if (!(/msie [6|7|8|9]/i.test(navigator.userAgent))){
+		(function(){
+		window.scrollReveal = new scrollReveal({reset: true});
+	})();
+};
+$('#myTab a').click(function (e) {
+  e.preventDefault();
+  $(this).tab('show');
+})
+
+$('a[data-toggle="tab"]').on('shown', function (e) {
+  e.target // activated tab
+  
+})
+ 
+</script>
+	</body>
+</html>
+	</body>
+</html>

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta charset="UTF-8">
+	<!-- Bootstrap -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+		
+
+    <script src="../js/jquery-1.11.3.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/scrollReveal.js"></script>
+		<title>Java 泛型回顾</title>
+		<link rel="stylesheet" href="../css/blogfeleilist.css" />
+	</head>
+	<body>			
+			<nav class="navbar navbar-default navbar-inverse navbar-fixed-top">
+					<div class="container">
+  			<div class="container-fluid ">
+  
+   	 <!-- Brand and toggle get grouped for better mobile display -->
+   				 <div class="navbar-header">
+     		 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+     
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="a.html">JAVA</a></li>
+        <li><a href="b.html"></a>DATABASE</li>
+        <li><a href="c.html">LINUX</a></li>
+        <li><a href="d.html">HTML5</a></li>
+        <li><a href="e.html">C</a></li>
+        <li><a href="f.html">SPRING</a></li>
+        <li><a href="g.html">STRUTS</a></li>
+        <li><a href="h.html">HIBEINATE</a></li>
+        <li><a href="i.html">BOOTSTRAP</a></li>
+          </ul>
+        </li>
+      </ul>
+    
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="j.html">BOOK</a></li>
+        <li><a href="zhuye.html">BACK</a></li>
+        <li><a href="zhuye.html?#contact">CONTACT ME</a></li>
+        </li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+		</div>
+			</nav>
+		<div id="mainmianban">
+			<h2>1、什么是泛型？</h2>
+<p>泛型（Generics ）是把类型参数化，运用于类、接口、方法中，可以通过执行泛型类型调用 分配一个类型，将用分配的具体类型替换泛型类型。然后，所分配的类型将用于限制容器内使用的值，这样就无需进行类型转换，还可以在编译时提供更强的类型检查。<span style="font-weight: normal;"> </span></p>
+<h2>2、泛型有什么用？</h2>
+<p>泛型主要有两个好处：</p>
+<p>（1）消除显示的强制类型转换，提高代码复用</p>
+<p>（2）提供更强的类型检查，避免运行时的ClassCastException</p>
+<h2>3、泛型的使用</h2>
+<p>类型参数（又称类型变量）用作占位符，指示在运行时为类分配类型。根据需要，可能有一个或多个类型参数，并且可以用于整个类。根据惯例，类型参数是单个大写字母，该字母用于指示所定义的参数类型。下面列出每个用例的标准类型参数：</p>
+<pre class="brush: java; gutter: true">E：元素
+K：键
+N：数字
+T：类型
+V：值
+S、U、V 等：多参数情况中的第 2、3、4 个类型
+? 表示不确定的java类型（无限制通配符类型）</pre>
+<h2>4、有界泛型</h2>
+<p>&lt;? extends T&gt;：是指 “ 上界通配符 （Upper Bounds Wildcards） ”</p>
+<p>&lt;? super T&gt;：是指 “ 下界通配符 （Lower Bounds Wildcards） ”</p>
+<p>&#8212;这里有个坑</p>
+<p>举个例子，如下，注释的部分是编译不通过的。</p>
+<pre class="brush: java; gutter: true">/**
+ * @author Sven Augustus
+ */
+public class Test {
+
+	static class Species{}
+	static class Human extends Species{}
+	static class Man extends Human{}
+	static class Woman extends Human{}
+
+	public static void main(String[] args) {
+		List&lt;Human&gt; list = new ArrayList&lt;Human&gt;();
+		list.add(new Man());
+		list.add(new Woman());
+//		Man o11 = (Man) list.get(0); // 这不能保证转型成功，也不是泛型的初衷
+		Human o12 = list.get(0);
+
+		List&lt;? extends Human&gt; list2 = new ArrayList&lt;Human&gt;();
+//		list2.add(new Object()); // 编译错误：这不能写入元素，类型校验失败
+//		list2.add(new Species()); // 编译错误：这不能写入元素，类型校验失败
+//		list2.add(new Human()); // 编译错误：这不能写入元素，类型校验失败
+//		list2.add(new Man()); // 编译错误：这不能写入元素，类型校验失败
+//		list2.add(new Woman()); // 编译错误：这不能写入元素，类型校验失败
+//		Man o21 = (Man) list2.get(0);// 这不能保证转型成功，也不是泛型的初衷
+		Human o22 = list2.get(0);
+
+		List&lt;? super Human&gt; list3 = new ArrayList&lt;Human&gt;();
+//		list3.add(new Object()); // 编译错误：这不能写入元素，类型校验失败
+//		list3.add(new Species()); // 编译错误：这不能写入元素，类型校验失败
+		list3.add(new Human());
+		list3.add(new Man());
+		list3.add(new Woman());
+//		Man o31 = (Man) list3.get(0); // 这不能保证转型成功，也不是泛型的初衷
+//		Human o32 = list3.get(0); // 编译错误：无法自动转型为 Number
+		Object o33 = list3.get(0);
+	}
+
+}</pre>
+<p><span style="font-weight: normal;">那么我们看到</span></p>
+<p>如 List&lt;? extends T&gt; 大家以为元素为 T以及其所有子类的对象 的List。其实不是。元素类型 仅指T的某一个不确定的子类，是单一的一个不确定类，没有具体哪个类。因此不能插入一个不确定的。</p>
+<p>List&lt;? super T&gt; 大家以为元素为 T以及其父类的对象 的List。其实不是，元素类型 仅指T的某一个不确定的父类，是单一的一个不确定类（只确定是T的父类），没有具体哪个类。</p>
+<p>因此：</p>
+<p>不能往List&lt;? extends T&gt;中插入任何类型的对象。唯一可以保证的是，你可以从中读取到T或者T的子类。</p>
+<p>可以往List&lt;? super T&gt;中插入T或者T子类的对象，但不可以插入T父类的对象。可以读取到Object或者Object子类的对象（你并不知道具体的子类是什么）。</p>
+<p>我们总结一下：</p>
+<ul>
+<li>如果频繁支持读取数据，不要求写数据，使用&lt;? extends T&gt;。即生产者 使用 &lt;? extends T&gt;</li>
+<li>如果频繁支持写入数据，不特别要求读数据，使用&lt;? super T&gt;。即消费者 使用 &lt;? super T&gt;</li>
+<li>如果都需要支持，使用&lt;T&gt;。<span style="font-weight: normal;"> </span></li>
+</ul>
+<h3>5、类型擦除</h3>
+<p>Java的泛型在编译期间，所有的泛型信息都会被擦除掉。</p>
+<pre class="brush: java; gutter: true">Class c1 = new ArrayList&lt;Integer&gt;().getClass();  
+Class c2 = new ArrayList&lt;Long&gt;().getClass();   
+System.out.println(c1 == c2);</pre>
+<p>这就是 Java 泛型的类型擦除造成的，因为不管是 ArrayList&lt;Integer&gt; 还是 ArrayList&lt;Long&gt;，在编译时都会被编译器擦除成了 ArrayList。Java 之所以要避免在创建泛型实例时而创建新的类，从而避免运行时的过度消耗。</p>
+<h2>6、泛型类型信息</h2>
+<p>那么，如果我们确实某些场景，如HTTP或RPC或jackson需要获取泛型进行序列化反序列化的时候，需要获取泛型类型信息。</p>
+<p>可以参照如下：</p>
+<pre class="brush: java; gutter: true">package io.flysium.standard.generic;
+
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+
+/**
+ *  获取运行时的泛型类型信息
+ *
+ * @author Sven Augustus
+ */
+public class Test2 {
+
+	static class ParameterizedTypeReference&lt;T&gt; {
+		protected final Type type;
+
+		public ParameterizedTypeReference() {
+			Type superClass = this.getClass().getGenericSuperclass();
+			//if (superClass instanceof Class) {
+	// throw new IllegalArgumentException(
+//&quot;Internal error: TypeReference constructed without actual type information&quot;);
+			//	} else {
+				this.type = ((ParameterizedType) superClass).getActualTypeArguments()[0];
+			//}
+		}
+
+		public Type getType() {
+			return type;
+		}
+	}
+
+	public static void main(String[] args) {
+// System.out.println(new ParameterizedTypeReference&lt;String&gt;().getType());
+// java.lang.ClassCastException: java.lang.Class cannot be cast to java.lang.reflect.ParameterizedType
+// 此处会输出报错，因此ParameterizedTypeReference 应不能直接实例化，可以考虑加abstract
+
+		System.out.println(new ParameterizedTypeReference&lt;String&gt;() { }.getType());
+// ParameterizedTypeReference 的匿名内部类，可以触发super()，
+//即 ParameterizedTypeReference()的构造器逻辑，正常运行
+	}
+
+}</pre>
+<p><span style="font-weight: normal;">注意一个关键点：</span></p>
+<p>可以通过定义类的方式（通常为匿名内部类，因为我们创建这个类只是为了获得泛型信息）在运行时获得泛型参数。</p>
+
+        
+
+		</div>
+<script>
+if (!(/msie [6|7|8|9]/i.test(navigator.userAgent))){
+		(function(){
+		window.scrollReveal = new scrollReveal({reset: true});
+	})();
+};
+$('#myTab a').click(function (e) {
+  e.preventDefault();
+  $(this).tab('show');
+})
+
+$('a[data-toggle="tab"]').on('shown', function (e) {
+  e.target // activated tab
+  
+})
+ 
+</script>
+	</body>
+</html>
+	</body>
+</html>
