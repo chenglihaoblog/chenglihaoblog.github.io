@@ -1332,6 +1332,7 @@ ul.footer-icons li i:hover {
 		font-size: 13px;
 	}
 }
+
 @media (max-width:320px){
 	.logos a img {
 		width: 16%;
